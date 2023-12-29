@@ -1,9 +1,10 @@
 <script setup lang="ts">
-const props = defineProps<{
-  file: File | null;
-}>();
-
 import { ref, watch } from "vue";
+import Visualizer from "./visualizer.vue";
+
+const props = defineProps<{
+  file: File;
+}>();
 
 const player = ref<HTMLAudioElement | null>(null);
 const isPlaying = ref<boolean>(false);
@@ -33,16 +34,23 @@ watch(player, (player) => {
 </script>
 
 <template>
-  <audio ref="player"></audio>
-  <button @click="playPauseHandler">
-    <img v-if="!isPlaying" src="../assets/play.svg" />
-    <img v-if="isPlaying" src="../assets/pause.svg" />
-  </button>
+  <div class="player-wrapper">
+    <audio ref="player"></audio>
+    <button @click="playPauseHandler">
+      <img v-if="!isPlaying" src="../assets/play.svg" />
+      <img v-if="isPlaying" src="../assets/pause.svg" />
+    </button>
+    <Visualizer :is-playing="isPlaying" :player="player" />
+  </div>
 </template>
 
 <style scoped>
+.player-wrapper {
+  position: relative;
+}
+
 button {
-  background: none;
+  background: #000;
   border: none;
   outline: none;
   cursor: pointer;

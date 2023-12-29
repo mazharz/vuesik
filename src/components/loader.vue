@@ -38,11 +38,13 @@ input {
   width: 13rem;
   height: 13rem;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   transition: box-shadow 0.5s ease;
   cursor: pointer;
   box-shadow: 0 0 20rem #f00;
   user-select: none;
+  font-weight: 500;
 }
 
 .file-input:hover {
