@@ -12,5 +12,5 @@ const setFile = (f: File) => {
 
 <template>
   <Loader v-if="!file" @set-file="setFile" />
-  <Player v-if="!!file" :file="file" />
+  <Player v-if="!!file" :file="file" @set-file="setFile" />
 </template>
