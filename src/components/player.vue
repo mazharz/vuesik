@@ -57,13 +57,15 @@ const openFileHandler = () => {
 <template>
   <div class="player-wrapper">
     <audio ref="player"></audio>
-    <button class="play-pause" @click="playPauseHandler">
-      <img v-if="!isPlaying" src="../assets/play.svg" />
-      <img v-if="isPlaying" src="../assets/pause.svg" />
-    </button>
+    <div class="player-circle">
+      <Progress :player="player" :file="file" @end-of-song="pauseHandler" />
+      <button class="play-pause" @click="playPauseHandler">
+        <img v-if="!isPlaying" src="../assets/play.svg" />
+        <img v-if="isPlaying" src="../assets/pause.svg" />
+      </button>
+    </div>
     <Visualizer :is-playing="isPlaying" :player="player" />
     <div class="details">
-      <Progress :player="player" :file="file" @end-of-song="pauseHandler" />
       <div class="song-name" :title="file.name">
         {{ file.name.replace(/^\d+\.*\_*\s*|\.[^.]+$/g, "") }}
       </div>
@@ -82,6 +84,27 @@ input {
 
 .player-wrapper {
   position: relative;
+}
+
+.player-circle {
+  position: relative;
+  background: #000;
+  width: 13rem;
+  height: 13rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  transition: box-shadow 0.5s ease;
+  box-shadow: 0 0 20rem #0f0;
+}
+
+.player-circle:hover {
+  box-shadow: 0 0 14rem #0f0;
+}
+
+.player-circle:active {
+  box-shadow: 0 0 12rem #0f0;
 }
 
 .details {
@@ -119,25 +142,13 @@ button.reload {
 }
 
 button.play-pause {
-  background: #000;
+  background: transparent;
+  z-index: 1;
   border: none;
   outline: none;
   cursor: pointer;
-  width: 13rem;
-  height: 13rem;
   place-items: center;
-  border-radius: 100%;
-  transition: box-shadow 0.5s ease;
-  box-shadow: 0 0 20rem #0f0;
   user-select: none;
-}
-
-button.play-pause:hover {
-  box-shadow: 0 0 14rem #0f0;
-}
-
-button.play-pause:active {
-  box-shadow: 0 0 12rem #0f0;
 }
 
 img {

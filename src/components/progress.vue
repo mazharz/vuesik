@@ -16,35 +16,36 @@ const props = defineProps<{
 const onTimeUpdate = () => {
   if (!props.player || !progressFill.value) return;
 
-  const progress = (props.player.currentTime / props.player.duration) * 100;
-  progressFill.value.style.transform = `translateX(-${100 - progress}%)`;
+  const progressPercentage =
+    (props.player.currentTime / props.player.duration) * 100;
+  const progressPixel = Math.round((progressPercentage * 285) / 100);
+  const remainingAmount = 285 - progressPixel;
+  progressFill.value.style.strokeDashoffset = `${remainingAmount}px`;
 
-  if (progress >= 100) {
+  if (progressPercentage >= 100) {
     emit("end-of-song");
   }
 };
 
-const onProgressChange = (e: MouseEvent) => {
+const onProgressChange = (e: WheelEvent) => {
   if (!progress.value || !props.player) return;
 
-  const xPosition = e.clientX - progress.value?.getBoundingClientRect().left;
-  const progressWidth = progress.value.clientWidth;
-  const seek = (xPosition / progressWidth) * props.player.duration;
-  props.player.currentTime = seek;
+  const seekAmount = e.deltaY > 0 ? -2 : 2;
+  props.player.currentTime += seekAmount;
 };
 
 watch(
   () => props.file,
   () => {
     if (progressFill.value) {
-      progressFill.value.style.transform = `translateX(-100%)`;
+      progressFill.value.style.strokeDashoffset = `285px`;
     }
   }
 );
 watch(progress, (progress) => {
   if (!progress) return;
 
-  progress.addEventListener("click", onProgressChange);
+  progress.addEventListener("wheel", onProgressChange);
 });
 watch([() => props.player, progressFill], ([player, progressFill]) => {
   if (!player || !progressFill) return;
@@ -53,38 +54,42 @@ watch([() => props.player, progressFill], ([player, progressFill]) => {
 });
 onBeforeUnmount(() => {
   props.player?.removeEventListener("timeupdate", onTimeUpdate);
-  progress.value?.removeEventListener("click", onProgressChange);
+  progress.value?.removeEventListener("wheel", onProgressChange);
 });
 </script>
 
 <template>
-  <div class="container" ref="progress">
-    <div class="progress">
-      <div class="progress-fill" ref="progressFill"></div>
-    </div>
+  <div class="progress" ref="progress">
+    <svg viewBox="0 0 100 100">
+      <circle class="inactive" cx="50" cy="50" r="45" />
+      <circle class="active" cx="50" cy="50" r="45" ref="progressFill" />
+    </svg>
   </div>
 </template>
 
 <style scoped>
-.container {
-  width: 20rem;
-  padding: 0.5rem 0;
-  cursor: pointer;
-}
-
 .progress {
-  width: 100%;
-  height: 0.1rem;
-  background-color: gray;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-fill {
+  transform: rotate(-90deg);
   position: absolute;
   inset: 0;
-  background-color: #080;
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
+  background-color: transparent;
+}
+
+svg circle {
+  stroke-width: 0.1rem;
+  stroke-linecap: round;
+  pointer-events: stroke;
+  fill: none;
+  transition: stroke-dashoffset 0.5s ease, stroke-dasharray 0.5s ease;
+}
+
+svg circle.inactive {
+  stroke: transparent;
+}
+
+svg circle.active {
+  stroke: #080;
+  stroke-dashoffset: 285px;
+  stroke-dasharray: 285px;
 }
 </style>
