@@ -3,7 +3,7 @@ const emit = defineEmits<{
   (e: "end-of-song"): void;
 }>();
 
-import { onBeforeUnmount, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 const progress = ref<HTMLDivElement | null>(null);
 const progressFill = ref<HTMLDivElement | null>(null);
@@ -42,19 +42,17 @@ watch(
     }
   }
 );
-watch(progress, (progress) => {
-  if (!progress) return;
-
-  progress.addEventListener("wheel", onProgressChange);
-});
 watch([() => props.player, progressFill], ([player, progressFill]) => {
   if (!player || !progressFill) return;
 
   player.addEventListener("timeupdate", onTimeUpdate);
 });
+onMounted(() => {
+  document.addEventListener("wheel", onProgressChange);
+});
 onBeforeUnmount(() => {
   props.player?.removeEventListener("timeupdate", onTimeUpdate);
-  progress.value?.removeEventListener("wheel", onProgressChange);
+  document.removeEventListener("wheel", onProgressChange);
 });
 </script>
 
