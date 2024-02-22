@@ -25,7 +25,9 @@ const openFileHandler = () => {
 
 <template>
   <input type="file" accept="audio/*" ref="inputRef" />
-  <div class="file-input" @click="openFileHandler">Open a file</div>
+  <div class="file-input" @click="openFileHandler" v-hide-cursor>
+    Open a file
+  </div>
 </template>
 
 <style scoped>
@@ -41,7 +43,6 @@ input {
   justify-content: center;
   align-items: center;
   transition: box-shadow 0.5s ease;
-  cursor: pointer;
   box-shadow: 0 0 20rem #f00;
   user-select: none;
   font-weight: 500;

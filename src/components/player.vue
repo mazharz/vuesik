@@ -57,9 +57,9 @@ const openFileHandler = () => {
 <template>
   <div class="player-wrapper">
     <audio ref="player"></audio>
-    <div class="player-circle">
+    <div class="player-circle" @click="playPauseHandler" v-hide-cursor>
       <Progress :player="player" :file="file" @end-of-song="pauseHandler" />
-      <button class="play-pause" @click="playPauseHandler">
+      <button class="play-pause">
         <img v-if="!isPlaying" src="../assets/play.svg" />
         <img v-if="isPlaying" src="../assets/pause.svg" />
       </button>
@@ -70,7 +70,12 @@ const openFileHandler = () => {
         {{ file.name.replace(/^\d+\.*\_*\s*|\.[^.]+$/g, "") }}
       </div>
       <input type="file" accept="audio/*" ref="inputRef" />
-      <button class="reload" @click="openFileHandler" title="Change file">
+      <button
+        class="reload"
+        @click="openFileHandler"
+        title="Change file"
+        v-hide-cursor
+      >
         <img src="../assets/load.svg" />
       </button>
     </div>
@@ -122,8 +127,9 @@ button.reload {
   background: transparent;
   border: none;
   outline: none;
-  cursor: pointer;
   transform: scaleY(-100%);
+  width: 3rem;
+  height: 3rem;
 }
 
 .song-name {
@@ -146,7 +152,6 @@ button.play-pause {
   z-index: 1;
   border: none;
   outline: none;
-  cursor: pointer;
   place-items: center;
   user-select: none;
 }
@@ -157,7 +162,7 @@ img {
 }
 
 .reload img {
-  width: 1rem;
-  height: 1rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 </style>
