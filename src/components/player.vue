@@ -88,7 +88,6 @@ input {
 
 .player-circle {
   position: relative;
-  background: #000;
   width: 13rem;
   height: 13rem;
   display: flex;
@@ -96,7 +95,6 @@ input {
   align-items: center;
   border-radius: 100%;
   transition: box-shadow 0.5s ease;
-  box-shadow: 0 0 20rem #0f0;
 }
 
 .player-circle:hover {

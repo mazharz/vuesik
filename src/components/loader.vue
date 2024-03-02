@@ -51,7 +51,6 @@ input {
   justify-content: center;
   align-items: center;
   transition: box-shadow 0.5s ease;
-  box-shadow: 0 0 20rem #f00;
   user-select: none;
   font-weight: 500;
 }
