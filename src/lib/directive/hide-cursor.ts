@@ -10,11 +10,11 @@ export const hideCursor: Directive = {
       window.shouldSkip = true;
       cursor.style.transition = `transform 0.5s ease, opacity 0.3s ease, width 0.3s ease, height 0.3s ease`;
 
-      cursor.style.width = `${el.offsetWidth}px`;
-      cursor.style.height = `${el.offsetHeight}px`;
-      cursor.style.transform = `translate(${el.getBoundingClientRect().x}px, ${
-        el.getBoundingClientRect().y
-      }px)`;
+      cursor.style.width = `${Math.round(el.offsetWidth)}px`;
+      cursor.style.height = `${Math.round(el.offsetHeight)}px`;
+      cursor.style.transform = `translate(${Math.round(
+        el.getBoundingClientRect().x
+      )}px, ${Math.round(el.getBoundingClientRect().y)}px)`;
       // if (cursor) cursor.style.opacity = "0";
     });
 
