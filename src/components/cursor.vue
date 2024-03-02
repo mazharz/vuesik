@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useCursorStore } from "../lib/state/cursor.store";
 
 const cursor = ref<HTMLDivElement | null>(null);
+const cursorStore = useCursorStore();
 
 function updateCursorPosition(e: PointerEvent) {
   if (!cursor.value) return;
-  // @ts-ignore
-  if (window.shouldSkip) return;
+  if (cursorStore.shouldSkipCursorRepositioning) return;
   cursor.value.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
 }
 

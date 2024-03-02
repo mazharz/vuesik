@@ -1,13 +1,15 @@
 import { Directive } from "vue";
+import { useCursorStore } from "../state/cursor.store";
 
 export const hideCursor: Directive = {
   beforeMount(el) {
+    const cursorStore = useCursorStore();
+
     el.addEventListener("mouseover", () => {
       const cursor = document.getElementById("cursor");
       if (!cursor) return;
 
-      // @ts-ignore
-      window.shouldSkip = true;
+      cursorStore.setShouldSkipCursorRepositioning(true);
       cursor.style.transition = `transform 0.5s ease, opacity 0.3s ease, width 0.3s ease, height 0.3s ease`;
 
       cursor.style.width = `${Math.round(el.offsetWidth)}px`;
@@ -22,8 +24,7 @@ export const hideCursor: Directive = {
       const cursor = document.getElementById("cursor");
       if (!cursor) return;
 
-      // @ts-ignore
-      window.shouldSkip = false;
+      cursorStore.setShouldSkipCursorRepositioning(false);
       cursor.style.transition = `transform 0.05s ease, opacity 0.3s ease, width 0.3s ease, height 0.3s ease`;
       cursor.style.width = `2rem`;
       cursor.style.height = `2rem`;

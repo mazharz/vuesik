@@ -4,8 +4,10 @@ const emit = defineEmits<{
 }>();
 
 import { ref, watch } from "vue";
+import { useCursorStore } from "../lib/state/cursor.store";
 
 const inputRef = ref<HTMLInputElement | null>(null);
+const cursorStore = useCursorStore();
 
 watch(inputRef, (element) => {
   if (!element) return;
@@ -18,8 +20,7 @@ watch(inputRef, (element) => {
     const cursor = document.getElementById("cursor");
     if (!cursor) return;
 
-    // @ts-ignore
-    window.shouldSkip = false;
+    cursorStore.setShouldSkipCursorRepositioning(false);
     cursor.style.transition = `transform 0.05s ease, opacity 0.3s ease, width 0.3s ease, height 0.3s ease`;
     cursor.style.width = `2rem`;
     cursor.style.height = `2rem`;
