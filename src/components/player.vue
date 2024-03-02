@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import Visualizer from "./visualizer.vue";
 import Progress from "./progress.vue";
+import { CursorHelper } from "../lib/helper/cursor";
 
 const props = defineProps<{
   file: File;
@@ -46,6 +47,7 @@ watch(inputRef, (element) => {
     if (file) {
       emit("set-file", file);
     }
+    CursorHelper.restore();
   });
 });
 
