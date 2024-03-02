@@ -70,12 +70,7 @@ const openFileHandler = () => {
         {{ file.name.replace(/^\d+\.*\_*\s*|\.[^.]+$/g, "") }}
       </div>
       <input type="file" accept="audio/*" ref="inputRef" />
-      <button
-        class="reload"
-        @click="openFileHandler"
-        title="Change file"
-        v-hide-cursor
-      >
+      <button class="reload" @click="openFileHandler" title="Change file" v-hide-cursor>
         <img src="../assets/load.svg" />
       </button>
     </div>
